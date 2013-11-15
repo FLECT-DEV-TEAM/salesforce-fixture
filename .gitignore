@@ -1,0 +1,10 @@
+*.BAK 
+logs/
+test/
+tmp/
+db/
+modules/
+*.BAK
+lib/
+velocity.log
+temp*.txt
