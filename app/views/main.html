@@ -1,16 +1,48 @@
 <!DOCTYPE html>
-
 <html>
-    <head>
-        <title>#{get 'title' /}</title>
-        <meta charset="${_response_encoding}">
-        <link rel="stylesheet" media="screen" href="@{'/public/stylesheets/main.css'}">
-        #{get 'moreStyles' /}
-        <link rel="shortcut icon" type="image/png" href="@{'/public/images/favicon.png'}">
-        <script src="@{'/public/javascripts/jquery-1.6.4.min.js'}" type="text/javascript" charset="${_response_encoding}"></script>
-        #{get 'moreScripts' /}
-    </head>
-    <body>
-        #{doLayout /}
-    </body>
+	<head>
+		<meta charset="${_response_encoding}">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>SalesforceClient Sample</title>
+		<link rel="stylesheet" media="screen" href="@{'/public/javascripts/ext/bootstrap3/css/bootstrap.css'}">
+		<link rel="stylesheet" media="screen" href="@{'/public/stylesheets/main.css'}">
+		#{get 'moreStyles' /}
+		
+		<link rel="shortcut icon" type="image/png" href="@{'/public/images/favicon.png'}">
+		
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js" type="text/javascript"></script>
+		<script src="@{'/public/javascripts/ext/bootstrap3/js/bootstrap.js'}" type="text/javascript" charset="${_response_encoding}"></script>
+		#{get 'moreScripts' /}
+	</head>
+	<body>
+		<a href="https://github.com/shunjikonishi/salesforce-fixture"><img style="position: absolute; top: 0; right: 0; border: 0; z-index: 9999;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png" alt="Fork me on GitHub"></a>
+		<div id="wrap">
+			<div id="header" class="navbar navbar-default">
+				<div class="container">
+					<div class="navbar-header">
+						<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-top">
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						</button>
+						<a class="navbar-brand" href="./">Salesforce Fixture</a>
+					</div>
+					<div class="collapse navbar-collapse navbar-top">
+						<ul class="nav navbar-nav">
+							<li id="nav-home"><a href="/">Home</a></li>
+							<li id="nav-men"><a href="/main">Main</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+	 		<div class="container">
+				#{doLayout /}
+			</div>
+		</div>
+		<!--
+		<div id="footer" class="panel-footer text-muted credit">
+			&copy; FLECT co,.ltd. Coordinated by <a href="http://getbootstrap.com/">Bootstrap 3.0.0</a>
+		</div>
+		-->
+	</body>
 </html>

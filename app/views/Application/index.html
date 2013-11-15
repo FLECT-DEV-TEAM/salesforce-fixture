@@ -1,4 +1,40 @@
 #{extends 'main.html' /}
-#{set title:'Home' /}
-
-#{welcome /}
+#{set title:'Salesforce-Fixture' /}
+<div class="row">
+	<div class="col-md-12">
+		<div class="jumbotron">
+			<h1>Salesforce Fixture</h1>
+			<div>
+				<p>このアプリでは単純なYAML構文を使用してSalesforce上のオブジェクトを更新／削除することができます。</p>
+				<p>アプリケーションのテストでデータを繰り返し更新／削除しなければならないような場合にご利用ください。</p>
+			</div>
+			<div>
+				<p>SalesforceへのアクセスにはOAuthを使用し、データ定義のYAMLはHeroku上のPostgresに保存されます。</p>
+			</div>
+		</div>
+		<div class="alert alert-danger">
+			<p>このアプリは主に<a href="http://www.flect.co.jp/" target="_blank">株式会社FLECT</a>が自社開発でのテストに使用することを想定して作成されています。</p>
+			<p>どなたでも自由に使用していただいて構いませんが、保存しているYAMLの永続性等は保証されません。</p>
+			<p>継続的に使用する場合は<a href="https://github.com/shunjikonishi/salesforce-fixture">GitHub上にあるソース</a>をcloneして御自身でHeroku等に帆スティングすることをお勧めします。</p>
+		</div>
+	</div>
+	<div class="col-md-6">
+		<h2>さっそく使ってみる</h2>
+		<form action="loginRedirect" method="post">
+			<p>
+				<button class="btn btn-info">OAuthでSalesforce認証</button>
+			</p>
+			<p>
+				<input type="checkbox" name="useSandbox" value="true"> Sandboxで使用する
+			</p>
+		</form
+	</div>
+	<div class="col-md-6">
+		<h2>リソース</h2>
+		<ul>
+			<li><a href="http://flect-salesforce-sample/fixture" target="_blank">YAMLの書式とFixtureAPIの概要</a></li>
+			<li><a href="http://oss.flect.co.jp" target="_blank">oss.flect.co.jp</a></li>
+			<li><a href="https://github.com/shunjikonishi/salesforce-fixture" target="_blank">flectSalesforce</a></li>
+		</ul>
+	</div>
+</div>

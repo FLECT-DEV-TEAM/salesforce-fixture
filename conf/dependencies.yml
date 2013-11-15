@@ -2,3 +2,13 @@
 
 require:
     - play
+    - jp.co.flect -> flectCommon     1.2
+    - jp.co.flect -> flectSoap       1.2
+    - jp.co.flect -> flectSalesforce 1.2
+
+repositories:
+    - flect:
+        type:   iBiblio
+        root:   "http://flect.github.io/maven-repo/"
+        contains:
+            - jp.co.flect -> *

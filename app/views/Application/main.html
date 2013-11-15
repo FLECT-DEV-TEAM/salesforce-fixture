@@ -1,0 +1,63 @@
+#{extends 'main.html' /}
+#{set title:'Salesforce-Fixture' /}
+<div class="row">
+	<div class="col-md-2 ">
+		<ul>
+			<li><a href="/main">新規作成</a></li>
+			#{list items: list, as: "fx"}
+			<li><a href="/fixture/${fx.id}">${fx.name}</a></li>
+			#{/list}
+		</ul>
+	</div>
+	<div class="col-md-10">
+		<h2>${info == null ? "新規作成" : info.name + "の編集"}</h2>
+		<div>
+			<label>名前： <input id="name" type="text" name="name" maxlength="80" value="${info?.name}"></label>
+		</div>.
+		<div>
+			<label>定義： <textarea id="yaml" name="yaml" cols="80" rows="10">${info?.yaml}</textarea></label>
+		</div>
+		<div>
+			<button id="register" class="btn btn-info">${info == null ? "作成" : "更新"}</button>
+		</div>
+	</div>
+</div>
+<form id="fixtureByName" action="fixtureByName" method="POST">
+	<input id="createdName" type="hidden" name="name"/>
+</form>
+
+<script>
+$(function() {
+	var id = ${info == null ? -1 : info.id};
+	
+	$("#register").click(function() {
+		var name = $("#name").val(),
+			yaml = $("#yaml").val();
+		if (!name || !yaml) {
+			alert("名前と定義の両方を設定してください");
+			return;
+		}
+		$.ajax({
+			"url" : id == -1 ? "/create" : "/update",
+			"type" : "POST",
+			"data" : {
+				"id" : id,
+				"name" : name,
+				"yaml" : yaml
+			},
+			"success" : function(data) {
+				if (data == "OK") {
+					if (id == -1) {
+						$("#createdName").val(name);
+						$("#fixtureByName")[0].submit();
+					} else {
+						location.href = "/fixture/" + id;
+					}
+				} else {
+					alert(data);
+				}
+			}
+		});
+	});
+});
+</script>
