@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import play.db.jpa.GenericModel;
@@ -14,7 +15,7 @@ import play.db.jpa.GenericModel;
 public class FixtureInfo extends GenericModel {
 	
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="ID")
 	public long id;
 	
