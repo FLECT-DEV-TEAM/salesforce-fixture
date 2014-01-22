@@ -19,6 +19,7 @@
 			<thead>
 				<tr>
 					<th>Name</th>
+					<th>Object</th>
 					<th>Key</th>
 					<th>Description</th>
 					<th>Values</th>
@@ -29,6 +30,7 @@
 			#{list items: fxList, as: "fx"}
 				<tr>
 					<td>${fx.name}</td>
+					<td>${fx.objectName}</td>
 					<td>${fx.keyField}=${fx.keyValue}</td>
 					<td>${fx.description}</td>
 					<td>
