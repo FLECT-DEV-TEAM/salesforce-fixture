@@ -11,10 +11,12 @@ import models.FixtureInfo;
 import jp.co.flect.net.OAuth2;
 import jp.co.flect.net.OAuthResponse;
 import jp.co.flect.salesforce.SalesforceClient;
+import jp.co.flect.salesforce.SalesforceException;
 import jp.co.flect.salesforce.UserInfo;
 import jp.co.flect.salesforce.fixtures.Fixture;
 import jp.co.flect.salesforce.fixtures.FixtureLoader;
 import jp.co.flect.salesforce.fixtures.FixtureRunner;
+import jp.co.flect.salesforce.update.SaveResult;
 
 import java.util.List;
 
@@ -158,7 +160,7 @@ public class Application extends Controller {
 		if (info == null) {
 			main();
 		}
-		List<Fixture> fxList = parseYaml(info.yaml);
+		List<Fixture> fxList = sm.normalizeList(parseYaml(info.yaml));
 		render(info, list, fxList);
 	}
 	
@@ -169,8 +171,8 @@ public class Application extends Controller {
 			renderText("Fixtureが見つかりません: " + name);
 		}
 		SalesforceClient client = sm.getSalesforceClient();
-		boolean ret = new FixtureRunner(client).update(fx);
-		renderText(ret ? "OK" : "NG");
+		SaveResult ret = new FixtureRunner(client).updateObject(fx);
+		renderText(ret.isSuccess() ? "OK" : getErrorMessage(ret));
 	}
 	
 	public static void runDelete(long id, String name) throws Exception {
@@ -180,8 +182,19 @@ public class Application extends Controller {
 			renderText("Fixtureが見つかりません: " + name);
 		}
 		SalesforceClient client = sm.getSalesforceClient();
-		boolean ret = new FixtureRunner(client).delete(fx);
-		renderText(ret ? "OK" : "NG");
+		SaveResult ret = new FixtureRunner(client).deleteObject(fx);
+		renderText(ret.isSuccess() ? "OK" : getErrorMessage(ret));
+	}
+	
+	private static String getErrorMessage(SaveResult ret) {
+		StringBuilder buf = new StringBuilder();
+		for (SalesforceException ex : ret.getErrors()) {
+			if (buf.length() != 0) {
+				buf.append("\n");
+			}
+			buf.append(ex.getMessage());
+		}
+		return buf.toString();
 	}
 	
 	private static List<Fixture> parseYaml(String yaml) throws IOException {

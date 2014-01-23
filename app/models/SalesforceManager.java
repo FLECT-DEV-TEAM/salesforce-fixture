@@ -5,12 +5,16 @@ import java.io.Serializable;
 import java.io.IOException;
 import java.io.ByteArrayInputStream;
 
+import jp.co.flect.soap.SoapException;
 import jp.co.flect.salesforce.SalesforceClient;
+import jp.co.flect.salesforce.Metadata;
 import jp.co.flect.salesforce.fixtures.Fixture;
 import jp.co.flect.salesforce.fixtures.FixtureLoader;
+import jp.co.flect.salesforce.exceptions.ObjectNotFoundException;
 import jp.co.flect.soap.WSDL;
 import java.io.File;
 import java.util.List;
+import java.util.ArrayList;
 
 public class SalesforceManager {
 	
@@ -61,6 +65,12 @@ public class SalesforceManager {
 		SalesforceClient client = new SalesforceClient(wsdl);
 		client.setSessionId(info.session);
 		client.setEndpoint(info.endpoint);
+		if (info.meta != null) {
+			if (info.meta.getWSDL() == null) {
+				info.meta.setWSDL(wsdl);
+			}
+			client.setMetadata(info.meta);
+		}
 		return client;
 	}
 	
@@ -103,11 +113,31 @@ public class SalesforceManager {
 		return null;
 	}
 	
+	public List<Fixture> normalizeList(List<Fixture> fxList) throws SoapException, IOException {
+		SalesforceClient client = getSalesforceClient();
+		List<Fixture> normalizedList = new ArrayList<Fixture>();
+		for (Fixture fx : fxList) {
+			Fixture newFx = null;
+			try {
+				newFx = fx.normalize(client);
+			} catch (ObjectNotFoundException e) {
+				fx.addProperty("Error", "Object not found: " + fx.getObjectName());
+				newFx = fx;
+			}
+			normalizedList.add(newFx);
+		}
+		LoginInfo info = (LoginInfo)Cache.get(key("login"));
+		info.meta = client.getMetadata();
+		Cache.set(key("login"), info);
+		return normalizedList;
+	}
+	
 	public static class LoginInfo implements Serializable {
 		
 		public String username;
 		public String session;
 		public String endpoint;
+		public Metadata meta;
 		
 		public LoginInfo(String u, String s, String e) {
 			this.username = u;
