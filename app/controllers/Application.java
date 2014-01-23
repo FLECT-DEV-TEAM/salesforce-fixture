@@ -118,6 +118,7 @@ public class Application extends Controller {
 			parseYaml(yaml);
 			info.name = name;
 			info.yaml = yaml;
+			info.updateDate = new java.sql.Timestamp(System.currentTimeMillis());
 			info.save();
 			renderText("OK");
 		} catch (Exception e) {
